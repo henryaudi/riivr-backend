@@ -1,0 +1,52 @@
+{
+  // ============================================================
+  //  TypeScript Configuration
+  //  Project: Riivr Social App
+  //  Author: Shangjie (Henry) Zheng
+  //  Environment: Node 20+ / Modern Browsers
+  // ============================================================
+  "compilerOptions": {
+    /* ----------------------------------------------------------
+       Language & Module Targets
+    ---------------------------------------------------------- */
+    "target": "es2022",
+    "module": "commonjs",
+    "lib": ["DOM", "ES2022"],
+
+    /* ----------------------------------------------------------
+       Path & Project Structure
+       (Defines build input/output and module resolution)
+    ---------------------------------------------------------- */
+    "baseUrl": ".",
+    "outDir": "./build",
+    "rootDir": "src",
+
+    /* ----------------------------------------------------------
+       Type Safety & Diagnostics
+       (Strictness and lint-level compiler options)
+    ---------------------------------------------------------- */
+    "strict": true,
+    "noImplicitAny": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+
+    /* ----------------------------------------------------------
+       Module & Interop Behavior
+       (How modules and imports are resolved or compiled)
+    ---------------------------------------------------------- */
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+
+    /* ----------------------------------------------------------
+       Build Tools & Metadata
+       (Debugging, decorators, and compilation details)
+    ---------------------------------------------------------- */
+    "sourceMap": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "forceConsistentCasingInFileNames": true,
+    "pretty": true,
+    "resolveJsonModule": true
+  }
+}
