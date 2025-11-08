@@ -18,6 +18,8 @@ import { config } from "./config";
 import { Server } from "socket.io";
 import { createClient } from "redis";
 import { createAdapter } from "@socket.io/redis-adapter";
+import applicationRoutes from "./routes";
+import { CustomError, IErrorResponse } from "./shared/globals/helpers/error-handler";
 
 const SERVER_PORT = 5050;
 
@@ -40,7 +42,7 @@ export class RiivrServer {
     app.use(
       cookieSession({
         name: "session",
-        keys: [config.SECRETE_KEY_ONE!, config.SECRETE_KEY_TWO!],  // They have to exist :)
+        keys: [config.SECRETE_KEY_ONE!, config.SECRETE_KEY_TWO!], // They have to exist :)
         maxAge: 24 * 7 * 3600 * 1000,
         secure: config.NODE_ENV !== "development",
       })
@@ -64,9 +66,32 @@ export class RiivrServer {
     app.use(urlencoded({ extended: true, limit: "50mb" }));
   }
 
-  private routeMiddleware(app: Application): void {}
+  private routeMiddleware(app: Application): void {
+    applicationRoutes(app);
+  }
 
-  private globalErrorHandler(app: Application): void {}
+  private globalErrorHandler(app: Application): void {
+    app.all("*", (req: Request, res: Response) => {
+      res
+        .status(HTTP_STATUS.NOT_FOUND)
+        .json({ message: `${req.originalUrl} not found` });
+    });
+
+    app.use(
+      (
+        error: IErrorResponse,
+        _req: Request,
+        res: Response,
+        next: NextFunction
+      ) => {
+        console.log(error);
+        if (error instanceof CustomError) {
+          return res.status(error.statusCode).json(error.serializeErrors());
+        }
+        next();
+      }
+    );
+  }
 
   private async startServer(app: Application): Promise<void> {
     try {
@@ -84,7 +109,7 @@ export class RiivrServer {
       cors: {
         origin: config.CLIENT_URL,
         methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-      }
+      },
     });
 
     const pubClient = createClient({ url: config.REDIS_HOST });
