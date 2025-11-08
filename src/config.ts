@@ -9,6 +9,7 @@ class Config {
   public SECRETE_KEY_ONE: string | undefined;
   public SECRETE_KEY_TWO: string | undefined;
   public CLIENT_URL: string | undefined;
+  public REDIS_HOST: string | undefined;
 
   private readonly DEFAULT_DB_URL = 'mongodb://localhost:27017/riivr-backend';
   private readonly DEFAULT_JWT_TOKEN = 'your-default-jwt-token';
@@ -16,6 +17,7 @@ class Config {
   private readonly DEFAULT_SECRETE_KEY_ONE = 'your-default-secret-key-one';
   private readonly DEFAULT_SECRETE_KEY_TWO = 'your-default-secret-key-two';
   private readonly DEFAULT_CLIENT_URL = 'http://localhost:3000';
+  private readonly DEFAULT_REDIS_HOST = 'http://localhost:6379';
 
   constructor() {
     this.DATABASE_URL = process.env.DATABASE_URL || this.DEFAULT_DB_URL;
@@ -24,6 +26,7 @@ class Config {
     this.SECRETE_KEY_ONE = process.env.SECRETE_KEY_ONE || this.DEFAULT_SECRETE_KEY_ONE;
     this.SECRETE_KEY_TWO = process.env.SECRETE_KEY_TWO || this.DEFAULT_SECRETE_KEY_TWO;
     this.CLIENT_URL = process.env.CLIENT_URL || this.DEFAULT_CLIENT_URL;
+    this.REDIS_HOST = process.env.REDIS_HOST || this.DEFAULT_REDIS_HOST;
   }
 
   public validateConfig(): void {

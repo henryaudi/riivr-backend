@@ -4,7 +4,7 @@ import { config } from "./config";
 export default () => {
   const connect = () => {
     mongoose
-      .connect(config.DATABASE_URL!)
+      .connect(config.DATABASE_URL!) 
       .then(() => {
         console.log("MongoDB connected successfully");
       })
