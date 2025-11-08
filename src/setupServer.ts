@@ -14,6 +14,7 @@ import compression from "compression";
 import cookieSession from "cookie-session";
 import HTTP_STATUS from "http-status-codes";
 import "express-async-errors";
+import { config } from "./config";
 
 const SERVER_PORT = 5050;
 
@@ -36,9 +37,9 @@ export class RiivrServer {
     app.use(
       cookieSession({
         name: "session",
-        keys: ["test1", "test2"],
+        keys: [config.SECRETE_KEY_ONE!, config.SECRETE_KEY_TWO!],  // They have to exist :)
         maxAge: 24 * 7 * 3600 * 1000,
-        secure: false,
+        secure: config.NODE_ENV !== "development",
       })
     );
 
@@ -46,7 +47,7 @@ export class RiivrServer {
     app.use(helmet());
     app.use(
       cors({
-        origin: "*",
+        origin: config.CLIENT_URL,
         credentials: true,
         optionsSuccessStatus: 200,
         methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],

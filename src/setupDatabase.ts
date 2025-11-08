@@ -1,0 +1,19 @@
+import mongoose from "mongoose";
+import { config } from "./config";
+
+export default () => {
+  const connect = () => {
+    mongoose
+      .connect(config.DATABASE_URL!)
+      .then(() => {
+        console.log("MongoDB connected successfully");
+      })
+      .catch((error) => {
+        console.error("MongoDB connection error:", error);
+        return process.exit(1);
+      });
+  };
+  connect();
+
+  mongoose.connection.on("disconnected", connect);
+};
