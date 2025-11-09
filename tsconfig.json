@@ -53,10 +53,6 @@
        Custom Paths & Plugins
        (Path aliases and custom transformers/plugins)
     ---------------------------------------------------------- */
-    "plugins": [
-      { "transform": "typescript-tslint-plugin" },
-      { "transform": "typescript-tslint-plugin", "afterDeclarations": true }
-    ],
     "paths": {
       "@global/*": ["src/shared/globals/*"],
       "@service/*": ["src/shared/services/*"],
