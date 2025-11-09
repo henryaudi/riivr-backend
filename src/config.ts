@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+import bunyan from 'bunyan';
 
 dotenv.config({});
 
@@ -29,6 +30,10 @@ class Config {
     this.REDIS_HOST = process.env.REDIS_HOST || this.DEFAULT_REDIS_HOST;
   }
 
+  public createLogger(name: string): bunyan {
+    return bunyan.createLogger({ name, level: 'debug' });
+  }
+
   public validateConfig(): void {
     for (const [key, val] of Object.entries(this)) {
       if (val === undefined) {
@@ -36,6 +41,6 @@ class Config {
       }
     }
   }
-};
+}
 
 export const config: Config = new Config();
