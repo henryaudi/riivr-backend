@@ -54,6 +54,7 @@
        (Path aliases and custom transformers/plugins)
     ---------------------------------------------------------- */
     "paths": {
+      "@auth/*": ["src/features/auth/*"],
       "@global/*": ["src/shared/globals/*"],
       "@service/*": ["src/shared/services/*"],
       "@socket/*": ["src/shared/sockets/*"],
