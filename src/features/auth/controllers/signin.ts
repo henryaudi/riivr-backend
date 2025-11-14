@@ -4,7 +4,7 @@ import { joiValidation } from '@global/decorators/joi-validation.decorators';
 import { authService } from '@service/db/auth.service';
 import HTTP_STATUS from 'http-status-codes';
 import JWT from 'jsonwebtoken';
-import { loginSchema } from '@auth/schemas/signin';
+import { loginSchema } from '@auth/validation/signin';
 import { IAuthDocument } from '@auth/interfaces/auth.interface';
 import { BadRequestError } from '@global/helpers/error-handler';
 import { IUserDocument } from '@user/interfaces/user.interface';
