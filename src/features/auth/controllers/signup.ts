@@ -62,7 +62,9 @@ export class Signup {
     const userJwt: string = Signup.prototype.signToken(authData, userObjectId);
     req.session = { jwt: userJwt };
 
-    res.status(HTTP_STATUS.CREATED).json({ message: 'User created successfully', user: userDataForCache, token: userJwt });
+    res
+      .status(HTTP_STATUS.CREATED)
+      .json({ message: 'User created successfully', user: userDataForCache, token: userJwt });
   }
 
   private signToken(data: IAuthDocument, userObjectId: ObjectId): string {
@@ -74,7 +76,7 @@ export class Signup {
         username: data.username,
         avatarColor: data.avatarColor
       },
-      config.JWT_TOKEN!,
+      config.JWT_TOKEN!
     );
   }
 
