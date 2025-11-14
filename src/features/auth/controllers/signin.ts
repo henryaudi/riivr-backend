@@ -7,6 +7,8 @@ import JWT from 'jsonwebtoken';
 import { loginSchema } from '@auth/schemas/signin';
 import { IAuthDocument } from '@auth/interfaces/auth.interface';
 import { BadRequestError } from '@global/helpers/error-handler';
+import { IUserDocument } from '@user/interfaces/user.interface';
+import { userService } from '@service/db/user.service';
 
 export class SignIn {
   @joiValidation(loginSchema)
@@ -22,9 +24,10 @@ export class SignIn {
       throw new BadRequestError('Invalid credentials');
     }
 
+    const user: IUserDocument = await userService.getUserByAuthId(`${existingUser._id}`);
     const userJwt: string = JWT.sign(
       {
-        userId: existingUser._id,
+        userId: user._id,
         uId: existingUser.uId,
         email: existingUser.email,
         username: existingUser.username,
