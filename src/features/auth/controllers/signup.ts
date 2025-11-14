@@ -54,9 +54,9 @@ export class Signup {
     await userCache.saveUserToCache(`${userObjectId}`, uId, userDataForCache);
 
     // Add to database (Remove fields before adding to the DB).
-    omit(userDataForCache, ['uId', 'username', 'email', 'avatarColor', 'password']);
-    authQueue.addAuthUserJob('addAuthUserToDB', { value: userDataForCache });
-    userQueue.addUserJob('addUserToDB', { value: userDataForCache });
+    const omittedUserDataForCache = omit(userDataForCache, ['uId', 'username', 'email', 'avatarColor', 'password']);
+    authQueue.addAuthUserJob('addAuthUserToDB', { value: authData });
+    userQueue.addUserJob('addUserToDB', { value: omittedUserDataForCache });
 
     // Add JWT to session.
     const userJwt: string = Signup.prototype.signToken(authData, userObjectId);
