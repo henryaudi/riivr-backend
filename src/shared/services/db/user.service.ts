@@ -10,8 +10,8 @@ class UserService {
   public async getUserById(userId: string): Promise<IUserDocument> {
     const users: IUserDocument[] = await UserModel.aggregate([
       { $match: { _id: new mongoose.Types.ObjectId(userId) } },
-      { $lookup: { from: 'Auth', localField: 'authId', foreignField: '_id', as: 'authId' } }, // Join with Auth collection
-      { $unwind: '$authId' },
+      { $lookup: { from: 'Auth', localField: 'authId', foreignField: '_id', as: 'auth' } }, // Join with Auth collection
+      { $unwind: '$auth' },
       { $project: this.aggregateProject() }
     ]);
 
@@ -21,8 +21,8 @@ class UserService {
   public async getUserByAuthId(authId: string): Promise<IUserDocument> {
     const users: IUserDocument[] = await UserModel.aggregate([
       { $match: { authId: new mongoose.Types.ObjectId(authId) } },
-      { $lookup: { from: 'Auth', localField: 'authId', foreignField: '_id', as: 'authId' } },
-      { $unwind: '$authId' },
+      { $lookup: { from: 'Auth', localField: 'authId', foreignField: '_id', as: 'auth' } },
+      { $unwind: '$auth' },
       { $project: this.aggregateProject() }
     ]);
     return users[0];
@@ -31,11 +31,11 @@ class UserService {
   private aggregateProject() {
     return {
       _id: 1,
-      username: '$authId.username',
-      uId: '$authId.uId',
-      email: '$authId.email',
-      avatarColor: '$authId.avatarColor',
-      createdAt: '$authId.createdAt',
+      username: '$auth.username',
+      uId: '$auth.uId',
+      email: '$auth.email',
+      avatarColor: '$auth.avatarColor',
+      createdAt: '$auth.createdAt',
       postsCount: 1,
       work: 1,
       school: 1,

@@ -48,8 +48,6 @@ export class SignIn {
       createdAt: existingUser!.createdAt
     } as IUserDocument;
 
-    res
-      .status(HTTP_STATUS.OK)
-      .json({ message: 'User login successfully', user: userDocument, token: userJwt });
+    res.status(HTTP_STATUS.OK).json({ message: 'User login successfully', user: userDocument, token: userJwt });
   }
 }

@@ -35,14 +35,16 @@ export class RiivrServer {
 
   private securityMiddleware(app: Application): void {
     app.use(
+      // Store the session in a cookie.
       cookieSession({
         name: 'session',
-        keys: [config.SECRETE_KEY_ONE!, config.SECRETE_KEY_TWO!], // They have to exist :)
+        keys: [config.SECRETE_KEY_ONE!, config.SECRETE_KEY_TWO!],
         maxAge: 24 * 7 * 3600 * 1000,
         secure: config.NODE_ENV !== 'development'
       })
     );
 
+    // Security middlewares.
     app.use(hpp());
     app.use(helmet());
     app.use(
@@ -56,8 +58,13 @@ export class RiivrServer {
   }
 
   private standardMiddleware(app: Application): void {
+    // Add compression to responses.
     app.use(compression());
+
+    // Limit the size of request bodies to 50mb.
     app.use(json({ limit: '50mb' }));
+
+    // Parse URL-encoded bodies with a size limit of 50mb.
     app.use(urlencoded({ extended: true, limit: '50mb' }));
   }
 
@@ -66,6 +73,7 @@ export class RiivrServer {
   }
 
   private globalErrorHandler(app: Application): void {
+    // Routes not specified in applicationRoutes above will be caught here.
     app.all('*', (req: Request, res: Response) => {
       res.status(HTTP_STATUS.NOT_FOUND).json({ message: `${req.originalUrl} not found` });
     });
@@ -101,6 +109,7 @@ export class RiivrServer {
     const pubClient = createClient({ url: config.REDIS_HOST });
     const subClient = pubClient.duplicate();
 
+    // Connect the Redis clients (publisher and subscriber).
     await Promise.all([pubClient.connect(), subClient.connect()]);
 
     io.adapter(createAdapter(pubClient, subClient));

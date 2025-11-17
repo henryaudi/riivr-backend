@@ -14,7 +14,7 @@ export class AuthMiddleware {
       const payload: AuthPayload = jwt.verify(req.session?.jwt, config.JWT_TOKEN!) as AuthPayload;
       req.currentUser = payload;
     } catch (error) {
-      throw new NotAuthorizedError('Token is invalid, authorization denied! Please login again.');
+      throw new NotAuthorizedError('Token is invalid! Please login again.');
     }
     next();
   }

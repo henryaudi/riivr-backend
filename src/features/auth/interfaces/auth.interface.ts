@@ -5,7 +5,6 @@ import { IUserDocument } from '@user/interfaces/user.interface';
 declare global {
   namespace Express {
     interface Request {
-      // In case the user is not logged in, currentUser can be undefined
       currentUser?: AuthPayload;
     }
   }
@@ -22,7 +21,7 @@ export interface AuthPayload {
 
 export interface IAuthDocument extends Document {
   _id: string | ObjectId;
-  uId: string;
+  uId: string;  
   username: string;
   email: string;
   password?: string;

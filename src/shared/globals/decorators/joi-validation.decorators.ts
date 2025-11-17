@@ -22,7 +22,6 @@ export function joiValidation(schema: ObjectSchema): IJoiDecorator {
       return originalMethod.apply(this, args);
     };
 
-    // Kind of optional... but ensures the method signature is preserved.
     return descriptor;
   };
 }
