@@ -1,7 +1,7 @@
 import { ObjectId } from 'mongodb';
 import { Request, Response } from 'express';
 import { joiValidation } from '@global/decorators/joi-validation.decorators';
-import { signupSchema } from '@auth/schemas/signup';
+import { signupSchema } from '@auth/validation/signup';
 import { IAuthDocument, ISignUpData } from '@auth/interfaces/auth.interface';
 import { authService } from '@service/db/auth.service';
 import { BadRequestError } from '@global/helpers/error-handler';
@@ -29,7 +29,7 @@ export class Signup {
       throw new BadRequestError('Invalid credentials');
     }
 
-    // Create new user auth document.
+    // Create new user and auth document.
     const authObjectId: ObjectId = new ObjectId();
     const userObjectId: ObjectId = new ObjectId();
     const uId = `${Helpers.generateRandomIntegers(12)}`;
@@ -43,12 +43,14 @@ export class Signup {
     });
 
     // Upload avatar image to cloudinary.
+    // Overwrite - true to replace existing image with same public id.
+    // Invalidate - true to invalidate cached images on CDN.
     const result: UploadApiResponse = (await uploads(avatarImage, `${userObjectId}`, true, true)) as UploadApiResponse;
     if (!result?.public_id) {
       throw new BadRequestError('File upload: Error occured. Try again.');
     }
 
-    // Add user to cache.
+    // Add user to Redis cache (ZADD, HSET).
     const userDataForCache: IUserDocument = Signup.prototype.userData(authData, userObjectId);
     userDataForCache.profilePicture = `https://res.cloudinary.com/${config.CLOUD_NAME}/image/upload/v${result.version}/${userObjectId}`;
     await userCache.saveUserToCache(`${userObjectId}`, uId, userDataForCache);
