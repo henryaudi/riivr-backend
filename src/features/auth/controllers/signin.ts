@@ -9,7 +9,6 @@ import { IAuthDocument } from '@auth/interfaces/auth.interface';
 import { BadRequestError } from '@global/helpers/error-handler';
 import { IUserDocument } from '@user/interfaces/user.interface';
 import { userService } from '@service/db/user.service';
-import { mailTransport } from '@service/emails/mail.transport';
 
 export class SignIn {
   @joiValidation(loginSchema)
@@ -36,6 +35,19 @@ export class SignIn {
       },
       config.JWT_TOKEN!
     );
+
+    // const templateParams: IResetPasswordParams = {
+    //   username: existingUser.username!,
+    //   email: existingUser.email!,
+    //   ipaddress: publicIP.address(),
+    //   date: moment().format('DD/MM/YYYY HH:mm')
+    // };
+    // const template: string = resetPasswordTemplate.passwordResetConfirmationTemplate(templateParams);
+    // emailQueue.addEmailJob('forgotPasswordEmail', {
+    //   template,
+    //   receiverEmail: 'bennie.mcclure@ethereal.email',
+    //   subject: 'Password Reset Confirmation'
+    // });
 
     req.session = { jwt: userJwt };
 
