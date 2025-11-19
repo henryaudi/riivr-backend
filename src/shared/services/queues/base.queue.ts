@@ -52,6 +52,14 @@ export abstract class BaseQueue {
     });
   }
 
+  
+  /**
+   * Enqueues a job with retry and backoff defaults.
+   * The job is stored under the supplied name so registered processors can pick it up.
+   *
+   * @param name - Identifier for the job type.
+   * @param data - Payload passed to the worker when the job runs.
+   */
   protected addJob(name: string, data: IBaseJobData): void {
     this.queue.add(name, data, {
       attempts: 3,
@@ -59,6 +67,15 @@ export abstract class BaseQueue {
     });
   }
 
+  /**
+   * Registers a processor for jobs with the provided name.
+   * Bull will invoke the callback for each matching job as they arrive,
+   * respecting the specified concurrency limit.
+   *
+   * @param name - Job name to bind the processor to.
+   * @param concurrency - Maximum number of jobs to run in parallel.
+   * @param callback - Handler that performs the actual job work.
+   */
   protected processJob(name: string, concurrency: number, callback: Queue.ProcessCallbackFunction<void>): void {
     this.queue.process(name, concurrency, callback);
   }

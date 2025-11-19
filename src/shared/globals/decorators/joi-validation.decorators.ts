@@ -17,7 +17,7 @@ export function joiValidation(schema: ObjectSchema): IJoiDecorator {
       if (error?.details) {
         throw new JoiRequestValidationError(error.details[0].message);
       }
-
+      
       // If validation passes, proceed to call the original method.
       return originalMethod.apply(this, args);
     };
