@@ -19,8 +19,10 @@
   "dependencies": {
     "@bull-board/express": "^6.14.2",
     "@bull-board/ui": "^6.14.2",
+    "@jest/types": "^30.2.0",
     "@sendgrid/mail": "^8.1.6",
     "@socket.io/redis-adapter": "^8.3.0",
+    "@types/jest": "^30.0.0",
     "bcryptjs": "^3.0.3",
     "bull": "^4.16.5",
     "bunyan": "^1.8.15",
@@ -63,7 +65,9 @@
     "@types/nodemailer": "^7.0.3",
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
+    "jest": "^30.2.0",
     "prettier": "^3.6.2",
+    "ts-jest": "^29.4.5",
     "ts-node": "^10.9.2",
     "tsc-alias": "^1.8.16",
     "typescript-eslint": "^8.46.3"
