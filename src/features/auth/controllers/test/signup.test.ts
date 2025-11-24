@@ -7,6 +7,7 @@ import { authService } from '@service/db/auth.service';
 import { UserCache } from '@service/redis/user.cache';
 
 /* Jest Mocks */
+jest.useFakeTimers();
 jest.mock('@service/queues/base.queue');
 jest.mock('@service/queues/auth.queue');
 jest.mock('@service/redis/user.cache');
@@ -21,6 +22,7 @@ describe('SignUp', () => {
 
   afterEach(() => {
     jest.clearAllMocks();
+    jest.clearAllTimers();
   });
 
   it('should throw an error if username is not available', () => {
