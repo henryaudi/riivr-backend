@@ -13,9 +13,16 @@ jest.mock('@service/redis/user.cache');
 jest.mock('@service/queues/user.queue');
 jest.mock('@global/helpers/cloudinary-upload');
 
-/* Test Data */
-
+/* Test Cases */
 describe('SignUp', () => {
+  beforeEach(() => {
+    jest.resetAllMocks();
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('should throw an error if username is not available', () => {
     const req: Request = authMockRequest(
       {},
