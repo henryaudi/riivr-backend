@@ -36,6 +36,19 @@ export class SignIn {
       config.JWT_TOKEN!
     );
 
+    // const templateParams: IResetPasswordParams = {
+    //   username: existingUser.username!,
+    //   email: existingUser.email!,
+    //   ipaddress: publicIP.address(),
+    //   date: moment().format('DD/MM/YYYY HH:mm')
+    // };
+    // const template: string = resetPasswordTemplate.passwordResetConfirmationTemplate(templateParams);
+    // emailQueue.addEmailJob('forgotPasswordEmail', {
+    //   template,
+    //   receiverEmail: 'bennie.mcclure@ethereal.email',
+    //   subject: 'Password Reset Confirmation'
+    // });
+
     req.session = { jwt: userJwt };
 
     const userDocument: IUserDocument = {

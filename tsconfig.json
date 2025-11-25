@@ -1,7 +1,7 @@
 {
   // ============================================================
   //  TypeScript Configuration
-  //  Project: Riivr Social App
+  //  Project: Riivr App
   //  Author: Shangjie (Henry) Zheng
   //  Environment: Node 20+ / Modern Browsers
   // ============================================================
@@ -62,5 +62,6 @@
       "@worker/*": ["src/shared/workers/*"],
       "@root/*": ["src/*"]
     }
-  }
+  },
+  "exclude": ["jest.config.ts"]
 }
