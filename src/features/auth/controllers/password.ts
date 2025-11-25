@@ -18,7 +18,7 @@ export class Password {
   @joiValidation(emailSchema)
   public async create(req: Request, res: Response): Promise<void> {
     const { email } = req.body;
-    const existingUser: IAuthDocument = await authService.getUserByEmail(email);
+    const existingUser: IAuthDocument = await authService.getAuthUserByEmail(email);
 
     if (!existingUser) {
       throw new BadRequestError('Invalid credentials');
@@ -46,7 +46,7 @@ export class Password {
     }
     // TODO: Add token validation logic in joiValidation decorator
 
-    const existingUser: IAuthDocument = await authService.getUserByPasswordToken(token);
+    const existingUser: IAuthDocument = await authService.getAuthUserByPasswordToken(token);
 
     if (!existingUser) {
       throw new BadRequestError('Invalid credentials or token has expired');
