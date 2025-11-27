@@ -7,7 +7,7 @@ import { authService } from '@service/db/auth.service';
 import { BadRequestError } from '@global/helpers/error-handler';
 import { IAuthDocument } from '@auth/interfaces/auth.interface';
 import { joiValidation } from '@global/decorators/joi-validation.decorators';
-import { emailSchema, passwordSchema } from '@auth/validation/password';
+import { emailSchema, passwordSchema } from '@auth/validations/password';
 import crypto from 'crypto';
 import { forgotPasswordTemplate } from '@service/emails/templates/forgot-password/forgot-password-template';
 import { emailQueue } from '@service/queues/email.queue';
