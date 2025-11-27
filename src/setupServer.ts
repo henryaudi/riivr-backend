@@ -14,6 +14,7 @@ import { createClient } from 'redis';
 import { createAdapter } from '@socket.io/redis-adapter';
 import applicationRoutes from '@root/routes';
 import { CustomError, IErrorResponse } from '@global/helpers/error-handler';
+import { SocketIOPostHandler } from '@socket/post';
 
 const SERVER_PORT = 5050;
 const log: Logger = config.createLogger('setupServer');
@@ -125,6 +126,7 @@ export class RiivrServer {
   }
 
   private socketIOConnections(io: Server): void {
-    log.info('SocketIOConnections');
+    const postSocketHandler: SocketIOPostHandler = new SocketIOPostHandler(io);
+    postSocketHandler.listen();
   }
 }
