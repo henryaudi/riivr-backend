@@ -5,6 +5,8 @@ import { ObjectId } from 'mongodb';
 import HTTP_STATUS from 'http-status-codes';
 import { IPostDocument } from '@post/interfaces/post.interface';
 import { PostCache } from '@service/redis/post.cache';
+import { socketIOPostObject } from '@socket/post';
+import { postQueue } from '@service/queues/post.queue';
 
 /**
  * Create Post cache instance inside controller to allow redundancy if redis fails
@@ -39,12 +41,16 @@ export class Create {
       reactions: { like: 0, love: 0, happy: 0, wow: 0, sad: 0, angry: 0 }
     } as IPostDocument;
 
+    // Emit socket event to notify clients about the new post.
+    socketIOPostObject.emit('add post', createdPost);
+
     await postCache.savePostToCache({
       key: postObjectId,
       currentUserId: `${req.currentUser!.userId}`,
       uId: `${req.currentUser!.uId}`,
       createdPost
     });
+    postQueue.addPostJob('addPostToDB', { key: req.currentUser!.userId, value: createdPost });
 
     res.status(HTTP_STATUS.CREATED).json({ message: 'Post created successfully', post: createdPost });
   }
