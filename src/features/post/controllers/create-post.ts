@@ -4,6 +4,13 @@ import { Request, Response } from 'express';
 import { ObjectId } from 'mongodb';
 import HTTP_STATUS from 'http-status-codes';
 import { IPostDocument } from '@post/interfaces/post.interface';
+import { PostCache } from '@service/redis/post.cache';
+
+/**
+ * Create Post cache instance inside controller to allow redundancy if redis fails
+ * (redis connection failure etc.)
+ */
+const postCache: PostCache = new PostCache();
 
 export class Create {
   @joiValidation(postSchema)
@@ -31,6 +38,13 @@ export class Create {
       createdAt: new Date(),
       reactions: { like: 0, love: 0, happy: 0, wow: 0, sad: 0, angry: 0 }
     } as IPostDocument;
+
+    await postCache.savePostToCache({
+      key: postObjectId,
+      currentUserId: `${req.currentUser!.userId}`,
+      uId: `${req.currentUser!.uId}`,
+      createdPost
+    });
 
     res.status(HTTP_STATUS.CREATED).json({ message: 'Post created successfully', post: createdPost });
   }
