@@ -6,8 +6,9 @@ import { ExpressAdapter } from '@bull-board/express';
 import { config } from '@root/config';
 import { IAuthJob } from '@auth/interfaces/auth.interface';
 import { IEmailJob } from '@user/interfaces/user.interface';
+import { IPostJobData } from '@post/interfaces/post.interface';
 
-type IBaseJobData = IAuthJob | IEmailJob;
+type IBaseJobData = IAuthJob | IEmailJob | IPostJobData;
 
 let bullAdapters: BullAdapter[] = [];
 
@@ -52,7 +53,7 @@ export abstract class BaseQueue {
     });
   }
 
-  
+
   /**
    * Enqueues a job with retry and backoff defaults.
    * The job is stored under the supplied name so registered processors can pick it up.
