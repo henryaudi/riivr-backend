@@ -4,6 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "start": "nodemon ./build/src/app.js | ./node_modules/.bin/bunyan",
     "dev": "nodemon -r tsconfig-paths/register src/app.ts | ./node_modules/.bin/bunyan",
     "lint:check": "eslint 'src/**/*.ts'",
     "lint:fix": "eslint 'src/**/*.ts' --fix",
@@ -25,6 +26,7 @@
     "@types/jest": "^30.0.0",
     "bcryptjs": "^3.0.3",
     "bull": "^4.16.5",
+    "bullmq": "^5.65.1",
     "bunyan": "^1.8.15",
     "cloudinary": "^2.8.0",
     "compression": "^1.8.1",
@@ -63,6 +65,7 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/lodash": "^4.17.20",
     "@types/nodemailer": "^7.0.3",
+    "@types/redis-info": "^3.0.3",
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
     "jest": "^30.2.0",
