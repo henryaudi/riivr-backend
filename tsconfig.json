@@ -19,7 +19,7 @@
     ---------------------------------------------------------- */
     "baseUrl": ".",
     "outDir": "./build",
-    "rootDir": "src",
+    "rootDir": ".",
 
     /* ----------------------------------------------------------
        Type Safety & Diagnostics
@@ -64,5 +64,5 @@
       "@root/*": ["src/*"]
     }
   },
-  "exclude": ["jest.config.ts"]
+  // "exclude": ["jest.config.ts"]
 }
