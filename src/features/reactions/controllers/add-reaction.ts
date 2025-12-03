@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import { ObjectId } from 'mongodb';
 import HTTP_STATUS from 'http-status-codes';
 import { joiValidation } from '@global/decorators/joi-validation.decorators';
 import { addReactionSchema } from '@reaction/validations/reactions';
