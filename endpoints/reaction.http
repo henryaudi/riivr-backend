@@ -9,9 +9,9 @@ withCredentials: true
 
 {
   "userTo": "6916b135baadb31ad19c8f1e",
-  "postId": "6929ca30ee5ca52ac91db9da",
+  "postId": "692fbf37056f5c7745c04a53",
   "type": "happy",
-  "previousReaction": "love",
+  "previousReaction": "",
   "postReactions": {
     "like": 0,
     "love": 0,
