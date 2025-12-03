@@ -22,3 +22,11 @@ withCredentials: true
   },
   "profilePicture": ""
 }
+
+###
+DELETE  {{baseUrl}}/{{urlPath}}/post/reaction/692fcce0d9d68131c36b90fc/wow/{"like":0,"love":0,"happy":0,"wow":0,"sad":0,"angry":0}
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+{}
