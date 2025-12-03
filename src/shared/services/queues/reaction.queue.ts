@@ -5,8 +5,8 @@ import { reactionWorker } from '@worker/reaction.worker';
 class ReactionQueue extends BaseQueue {
   constructor() {
     super('reactions');
-    this.processJob('addReactionDataToDB', 5, reactionWorker.addReactionToDB);
-    this.processJob('removeReactionDataFromDB', 5, reactionWorker.removeReactionToDB);
+    this.processJob('addReactionToDB', 5, reactionWorker.addReactionToDB);
+    this.processJob('removeReactionFromDB', 5, reactionWorker.removeReactionToDB);
   }
 
   public addReactionJob(name: string, data: IReactionJob): void {

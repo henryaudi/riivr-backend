@@ -14,7 +14,7 @@ export class Add {
   public async reaction(req: Request, res: Response): Promise<void> {
     const { userTo, postId, type, previousReaction, postReactions, profilePicture } = req.body;
     const reactionObject: IReactionDocument = {
-      _id: new ObjectId(),
+      // _id: new ObjectId(),
       postId,
       type,
       avatarColor: req.currentUser!.avatarColor,
