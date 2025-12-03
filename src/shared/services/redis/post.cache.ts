@@ -208,7 +208,7 @@ export class PostCache extends BaseCache {
         await this.client.connect();
       }
 
-      const postCount: (string | null)[] = await this.client.HMGET(`users:${currentUserId}`, 'postCount');
+      const postCount: (string | null)[] = await this.client.HMGET(`users:${currentUserId}`, 'postsCount');
       const multi: ReturnType<typeof this.client.multi> = this.client.multi();
 
       // Remove post from sorted set and delete corresponding hash.
@@ -219,7 +219,7 @@ export class PostCache extends BaseCache {
 
       // Update user's post count.
       const count: number = parseInt(postCount[0]!, 10) - 1;
-      multi.HSET(`users:${currentUserId}`, 'postCount', count);
+      multi.HSET(`users:${currentUserId}`, 'postsCount', count);
 
       await multi.exec();
     } catch (error) {

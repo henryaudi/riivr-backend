@@ -7,8 +7,9 @@ import { Query, UpdateQuery } from 'mongoose';
 class PostService {
   public async addPostToDB(userId: string, createdPost: IPostDocument): Promise<void> {
     const post: Promise<IPostDocument> = PostModel.create(createdPost);
-    const user: UpdateQuery<IUserDocument> = UserModel.updateOne({ _id: userId }, { $inc: { postCount: 1 } });
+    const user: UpdateQuery<IUserDocument> = UserModel.updateOne({ _id: userId }, { $inc: { postsCount: 1 } });
     await Promise.all([post, user]);
+    // console.log('Post and user post count updated in DB');
   }
 
   public async getPosts(
@@ -44,7 +45,7 @@ class PostService {
 
     const decrementPostCount: UpdateQuery<IUserDocument> = UserModel.updateOne(
       { _id: userId },
-      { $inc: { postCount: -1 } }
+      { $inc: { postsCount: -1 } }
     );
 
     await Promise.all([deletePost, decrementPostCount]);
