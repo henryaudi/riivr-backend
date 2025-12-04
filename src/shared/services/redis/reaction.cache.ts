@@ -62,6 +62,53 @@ export class ReactionCache extends BaseCache {
     }
   }
 
+  public async getReactionsFromCache(postId: string): Promise<[IReactionDocument[], number]> {
+    try {
+      if (!this.client.isOpen) {
+        await this.client.connect();
+      }
+
+      const response: string[] = await this.client.LRANGE(`reactions:${postId}`, 0, -1);
+      const list: IReactionDocument[] = [];
+
+      for (const item of response) {
+        list.push(Helpers.parseJson(item));
+      }
+
+      return response.length ? [list, list.length] : [[], 0];
+    } catch (error) {
+      log.error(error);
+      throw new ServerError('Server error. Try again.');
+    }
+  }
+
+  public async getSingleReactionByUsernameFromCache(
+    postId: string,
+    username: string
+  ): Promise<[IReactionDocument, number] | []> {
+    try {
+      if (!this.client.isOpen) {
+        await this.client.connect();
+      }
+
+      const response: string[] = await this.client.LRANGE(`reactions:${postId}`, 0, -1);
+      const list: IReactionDocument[] = [];
+      for (const item of response) {
+        list.push(Helpers.parseJson(item));
+      }
+
+      const result: IReactionDocument = find(
+        list,
+        (listItem: IReactionDocument) => listItem?.postId === postId && listItem?.username === username
+      ) as IReactionDocument;
+
+      return result ? [result, 1] : [];
+    } catch (error) {
+      log.error(error);
+      throw new ServerError('Server error. Try again.');
+    }
+  }
+
   private getPreviousReaction(response: string[], username: string): IReactionDocument | undefined {
     const list: IReactionDocument[] = [];
     for (const item of response) {
