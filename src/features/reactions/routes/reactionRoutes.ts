@@ -1,5 +1,5 @@
 import { authMiddleware } from '@global/helpers/auth-middleware';
-import { Add } from '@reaction/controllers/add-reaction';
+import { Add } from '@reaction/controllers/add-reactions';
 import { Remove } from '@reaction/controllers/remove-reaction';
 import express, { Router } from 'express';
 
