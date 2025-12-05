@@ -14,12 +14,12 @@ class ReactionRoutes {
   public routes(): Router {
     this.router.get('/post/reactions/:postId', authMiddleware.checkAuthentication, Get.prototype.reactions);
     this.router.get(
-      'post/single/reaction/username/:username/:postId',
+      '/post/single/reaction/username/:username/:postId',
       authMiddleware.checkAuthentication,
       Get.prototype.singleReactionByUsername
     );
     this.router.get(
-      'post/reactions/username/:username',
+      '/post/reactions/username/:username',
       authMiddleware.checkAuthentication,
       Get.prototype.reactionsByUsername
     );
