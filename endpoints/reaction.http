@@ -46,3 +46,11 @@ Accept: application/json
 withCredentials: true
 
 {}
+
+###
+GET  {{baseUrl}}/{{urlPath}}/post/reactions/username/John777
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+{}

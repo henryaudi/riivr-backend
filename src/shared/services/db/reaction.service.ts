@@ -70,9 +70,11 @@ class ReactionService {
     return reactions.length ? [reactions[0], 1] : [];
   }
 
-  public async getReactionsByUsername(username: string): Promise<IReactionDocument[]> {
+  public async getReactionsByUsername(
+    username: string
+  ): Promise<IReactionDocument[]> {
     const reactions: IReactionDocument[] = await ReactionModel.aggregate([
-      { $match: { username: Helpers.firstLetterUppercase(username) } }
+      { $match: { username: Helpers.firstLetterUppercase(username)} }
     ]);
     return reactions;
   }
