@@ -107,7 +107,7 @@ export const signUpMockData = {
   avatarColor: '#ff9800',
   password: 'manny1',
   birthDay: { month: '', day: '' },
-  postCount: 0,
+  postsCount: 0,
   gender: '',
   quotes: '',
   about: '',

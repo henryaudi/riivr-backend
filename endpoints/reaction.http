@@ -1,0 +1,56 @@
+@baseUrl = http://localhost:5050
+@urlPath = api/v1
+
+###
+POST {{baseUrl}}/{{urlPath}}/post/reaction
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+{
+  "userTo": "692fcc4ad9d68131c36b90ed",
+  "postId": "692fcce0d9d68131c36b90fc",
+  "type": "wow",
+  "previousReaction": "",
+  "postReactions": {
+    "like": 0,
+    "love": 0,
+    "happy": 0,
+    "wow": 1,
+    "sad": 0,
+    "angry": 0
+  },
+  "profilePicture": ""
+}
+
+###
+DELETE  {{baseUrl}}/{{urlPath}}/post/reaction/692fcce0d9d68131c36b90fc/wow/{"like":0,"love":0,"happy":0,"wow":0,"sad":0,"angry":0}
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+{}
+
+###
+GET  {{baseUrl}}/{{urlPath}}/post/reactions/692fcce0d9d68131c36b90fc
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+{}
+
+###
+GET  {{baseUrl}}/{{urlPath}}/post/single/reaction/username/John777/692fcce0d9d68131c36b90fc
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+{}
+
+###
+GET  {{baseUrl}}/{{urlPath}}/post/reactions/username/John777
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+{}
