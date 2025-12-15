@@ -23,7 +23,6 @@ export class Add {
       comment,
       createdAt: new Date()
     } as ICommentDocument;
-
     await commentCache.savePostCommentToCache(postId, JSON.stringify(commentData));
 
     const databaseCommentData: ICommentJob = {
