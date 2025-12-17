@@ -1,11 +1,12 @@
 import { Request, Response } from 'express';
-import { ObjectId } from 'mongodb';
+// import { ObjectId } from 'mongodb';
 import HTTP_STATUS from 'http-status-codes';
 import { FollowerCache } from '@service/redis/follower.cache';
 import { UserCache } from '@service/redis/user.cache';
 import { IUserDocument } from '@user/interfaces/user.interface';
 import { IFollowerData } from '@follower/interfaces/follower.interface';
 import mongoose from 'mongoose';
+import { socketIOFolloweObject } from '@socket/follower';
 
 const followerCache: FollowerCache = new FollowerCache();
 const userCache: UserCache = new UserCache();
@@ -33,10 +34,9 @@ export class Add {
     ) as Promise<IUserDocument>;
     const response: [IUserDocument, IUserDocument] = await Promise.all([cachedFollower, cachedFollowee]);
 
-    const followerObjectId: ObjectId = new ObjectId();
+    // const followerObjectId: ObjectId = new ObjectId();
     const addFolloweeData: IFollowerData = Add.prototype.userData(response[0]);
-
-    // Send data to client with socketIO.
+    socketIOFolloweObject.emit('add follower', addFolloweeData);
 
     const addFollowerToCache: Promise<void> = followerCache.saveFollowerToCache(
       `followers:${req.currentUser!.userId}`,
