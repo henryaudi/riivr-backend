@@ -71,11 +71,11 @@ describe('Add', () => {
       expect(UserCache.prototype.getUserFromCache).toHaveBeenCalledTimes(2);
       expect(FollowerCache.prototype.saveFollowerToCache).toHaveBeenCalledTimes(2);
       expect(FollowerCache.prototype.saveFollowerToCache).toHaveBeenCalledWith(
-        `followers:${req.currentUser!.userId}`,
+        `following:${req.currentUser!.userId}`,
         '6064861bc25eaa5a5d2f9bf4'
       );
       expect(FollowerCache.prototype.saveFollowerToCache).toHaveBeenCalledWith(
-        'following:6064861bc25eaa5a5d2f9bf4',
+        'followers:6064861bc25eaa5a5d2f9bf4',
         `${existingUser._id}`
       );
       expect(res.status).toHaveBeenCalledWith(200);
