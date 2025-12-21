@@ -65,6 +65,8 @@ class FollowerrService {
 
     await Promise.all([unfollow, users]);
   }
+
+
 }
 
 export const followerService: FollowerrService = new FollowerrService();
