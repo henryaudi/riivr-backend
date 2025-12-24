@@ -5,7 +5,7 @@ export interface INotificationDocument extends Document {
   userTo: string;
   userFrom: string;
   message: string;
-  notificationType: string;
+  notificationType: string;  // e.g., 'comment', 'message', 'reaction'
   entityId: mongoose.Types.ObjectId;
   createdItemId: mongoose.Types.ObjectId;
   comment: string;
