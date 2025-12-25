@@ -5,6 +5,7 @@ import { NotificationModel } from '@notification/models/notification.schema';
 import { IPostDocument } from '@post/interfaces/post.interface';
 import { PostModel } from '@post/models/post.schema';
 import { UserCache } from '@service/redis/user.cache';
+import { socketIONotificationObject } from '@socket/notification';
 import { IUserDocument } from '@user/interfaces/user.interface';
 import mongoose, { Query } from 'mongoose';
 
@@ -43,6 +44,11 @@ class CommentService {
         gifUrl: response[1].gifUrl!,
         reaction: ''
       });
+
+      // Emit notification to socket.io.
+      socketIONotificationObject.emit('insert notification', notifications, { userTo });
+
+      // TODO: Send to email queue.
     }
   }
 
