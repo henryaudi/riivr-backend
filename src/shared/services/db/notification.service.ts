@@ -30,13 +30,21 @@ class NotificationService {
             profilePicture: '$userFrom.profilePicture',
             username: '$authId.username',
             avatarColor: '$authId.avatarColor',
-            uId: '$authId.uId',
+            uId: '$authId.uId'
           }
         }
       }
     ]);
 
     return notifications;
+  }
+
+  public async updateNotification(notificationId: string): Promise<void> {
+    await NotificationModel.updateOne({ _id: notificationId }, { $set: { read: true } }).exec();
+  }
+
+  public async deleteNotification(notificationId: string): Promise<void> {
+    await NotificationModel.deleteOne({ _id: notificationId }).exec();
   }
 }
 
