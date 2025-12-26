@@ -10,6 +10,9 @@ import { NotificationModel } from '@notification/models/notification.schema';
 import { socketIONotificationObject } from '@socket/notification';
 import { notificationTemplate } from '@service/emails/templates/notifications/notification-template';
 import { emailQueue } from '@service/queues/email.queue';
+import { UserCache } from '@service/redis/user.cache';
+
+const userCache: UserCache = new UserCache();
 
 class FollowerrService {
   public async addFollowerToDB(
@@ -42,7 +45,10 @@ class FollowerrService {
       }
     ]);
 
-    const response: [BulkWriteResult, IUserDocument | null] = await Promise.all([users, UserModel.findOne({ _id: followeeId })]);
+    const response: [BulkWriteResult, IUserDocument | null] = await Promise.all([
+      users,
+      userCache.getUserFromCache(followeeId)
+    ]);
 
     // Send notification (if comments notification is enabled AND user is not the same as the recipient).
     if (response[1]?.notifications.follows && userId !== followeeId) {
