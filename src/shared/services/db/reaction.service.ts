@@ -7,6 +7,11 @@ import { UserCache } from '@service/redis/user.cache';
 import { IUserDocument } from '@user/interfaces/user.interface';
 import { omit } from 'lodash';
 import mongoose from 'mongoose';
+import { INotificationDocument, INotificationTemplate } from '@notification/interfaces/notification.interface';
+import { NotificationModel } from '@notification/models/notification.schema';
+import { socketIONotificationObject } from '@socket/notification';
+import { notificationTemplate } from '@service/emails/templates/notifications/notification-template';
+import { emailQueue } from '@service/queues/email.queue';
 
 const userCache: UserCache = new UserCache();
 
@@ -34,7 +39,41 @@ class ReactionService {
       )
     ])) as unknown as [IUserDocument, IReactionDocument, IPostDocument];
 
-    // Send reactions notification
+    // Send notification (if comments notification is enabled AND user is not the same as the recipient).
+    if (updatedReaction[0]?.notifications.reactions && userTo !== userFrom) {
+      const notificationModel: INotificationDocument = new NotificationModel();
+      const notifications = await notificationModel.insertNotification({
+        userFrom: userFrom as string,
+        userTo: userTo as string,
+        message: `${username} reacted to your post.`,
+        notificationType: 'reactions',
+        entityId: new mongoose.Types.ObjectId(postId),
+        createdItemId: new mongoose.Types.ObjectId(updatedReaction[1]._id!),
+        createdAt: new Date(),
+        comment: '',
+        post: updatedReaction[2].post,
+        imgId: updatedReaction[2].imgId!,
+        imgVersion: updatedReaction[2].imgVersion!,
+        gifUrl: updatedReaction[2].gifUrl!,
+        reaction: type!
+      });
+
+      // Emit notification to socket.io.
+      socketIONotificationObject.emit('insert notification', notifications, { userTo });
+
+      // Generate template and send notification email.
+      const templateParams: INotificationTemplate = {
+        username: updatedReaction[0]!.username!,
+        message: `${username} reacted to your post.`,
+        header: 'Post Reaction Notification'
+      };
+      const template: string = notificationTemplate.notificationMessageTemplate(templateParams);
+      emailQueue.addEmailJob('reactionsEmail', {
+        receiverEmail: updatedReaction[0]!.email!,
+        template,
+        subject: 'Post Reaction Notification'
+      });
+    }
   }
 
   public async removeReactionDataFromDB(reactionData: IReactionJob): Promise<void> {
@@ -70,11 +109,9 @@ class ReactionService {
     return reactions.length ? [reactions[0], 1] : [];
   }
 
-  public async getReactionsByUsername(
-    username: string
-  ): Promise<IReactionDocument[]> {
+  public async getReactionsByUsername(username: string): Promise<IReactionDocument[]> {
     const reactions: IReactionDocument[] = await ReactionModel.aggregate([
-      { $match: { username: Helpers.firstLetterUppercase(username)} }
+      { $match: { username: Helpers.firstLetterUppercase(username) } }
     ]);
     return reactions;
   }
