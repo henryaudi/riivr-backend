@@ -2,6 +2,14 @@
 @urlPath = api/v1
 
 ###
+GET {{baseUrl}}/{{urlPath}}/notifications
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+{}
+
+###
 PUT {{baseUrl}}/{{urlPath}}/notification/694ef3835d24d978b6fed5e2
 Content-Type: application/json
 Accept: application/json
