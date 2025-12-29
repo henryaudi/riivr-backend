@@ -9,7 +9,7 @@ class ImageService {
     await this.addImage(userId, imgId, imgVersion, 'profile');
   }
 
-  public async addBackgroundImageToDB(userId: string, url: string, imgId: string, imgVersion: string): Promise<void> {
+  public async addBackgroundImageToDB(userId: string, imgId: string, imgVersion: string): Promise<void> {
     await UserModel.updateOne({ _id: userId }, { $set: { bgImageId: imgId, bgImageVersion: imgVersion } }).exec();
     await this.addImage(userId, imgId, imgVersion, 'background');
   }
@@ -19,8 +19,8 @@ class ImageService {
       userId,
       bgImageVersion: type === 'background' ? imgVersion : '',
       bgImageId: type === 'background' ? imgId : '',
-      imgVersion: type === 'profile' ? imgVersion : '',
-      imgId: type === 'profile' ? imgId : ''
+      imgVersion,
+      imgId
     });
   }
 
