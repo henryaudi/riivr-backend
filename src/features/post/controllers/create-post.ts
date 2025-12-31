@@ -10,6 +10,7 @@ import { postQueue } from '@service/queues/post.queue';
 import { UploadApiResponse } from 'cloudinary';
 import { uploads } from '@global/helpers/cloudinary-upload';
 import { BadRequestError } from '@global/helpers/error-handler';
+import { imageQueue } from '@service/queues/image.queue';
 
 /**
  * Create Post cache instance inside controller to allow redundancy if redis fails
@@ -103,7 +104,11 @@ export class Create {
     });
     postQueue.addPostJob('addPostToDB', { key: req.currentUser!.userId, value: createdPost });
 
-    // TODO: create image queue to add image to MongoDB database.
+    imageQueue.addImageJob('addImageToDB', {
+      key: `${req.currentUser!.userId}`,
+      imgId: result.public_id,
+      imgVersion: result.version.toString()
+    });
 
     res.status(HTTP_STATUS.CREATED).json({ message: 'Post created with image successfully', post: createdPost });
   }
