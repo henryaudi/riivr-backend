@@ -23,6 +23,7 @@ const messageCache = new MessageCache();
 export class Add {
   @joiValidation(addChatSchema)
   public async message(req: Request, res: Response): Promise<void> {
+    console.log('Add Chat Message Controller');
     const {
       conversationId,
       receiverId,
@@ -43,7 +44,7 @@ export class Add {
     if (selectedImage.length) {
       const result: UploadApiResponse = (await uploads(
         req.body.image,
-        `${req.currentUser!.userId}`,
+        req.currentUser!.userId,
         true,
         true
       )) as UploadApiResponse;
@@ -53,55 +54,56 @@ export class Add {
       }
 
       fileUrl = `https://res.cloudinary.com/${config.CLOUD_NAME}/image/upload/v${result.version}/${result.public_id}`;
-
-      const messageData: IMessageData = {
-        _id: `${messageObjectId}`,
-        conversationId: new mongoose.Types.ObjectId(conversationObjectId),
-        receiverId,
-        receiverAvatarColor,
-        receiverProfilePicture,
-        receiverUsername,
-        senderUsername: `${req.currentUser!.username}`,
-        senderId: `${req.currentUser!.userId}`,
-        senderAvatarColor: `${req.currentUser!.avatarColor}`,
-        senderProfilePicture: `${sender.profilePicture}`,
-        body,
-        isRead,
-        gifUrl,
-        selectedImage: fileUrl,
-        reaction: [],
-        createdAt: new Date(),
-        deleteForEveryone: false,
-        deleteForMe: false
-      };
-
-      Add.prototype.emitSocketIOEvent(messageData);
-
-      if (!isRead) {
-        // Notify receiver only if the message is unread (i.e., they are not simultaneously in the chat).
-        Add.prototype.messageNotification({
-          currentUser: req.currentUser!,
-          message: body,
-          receiverName: receiverUsername,
-          receiverId,
-          messageData
-        });
-      }
-
-      // Add sender to chat list in cache
-      await messageCache.addChatListToCache(`${req.currentUser!.userId}`, `${receiverId}`, `${conversationObjectId}`);
-      // Add receiver to chat list in cache
-      await messageCache.addChatListToCache(`${receiverId}`, `${req.currentUser!.userId}`, `${conversationObjectId}`);
-
-
-      // TODO: Add message data to cache
-      // TODO: Add message to chat queue
-
-      res.status(HTTP_STATUS.OK).json({ message: 'Message added', conversationId: conversationObjectId });
     }
+
+    const messageData: IMessageData = {
+      _id: `${messageObjectId}`,
+      conversationId: new mongoose.Types.ObjectId(conversationObjectId),
+      receiverId,
+      receiverAvatarColor,
+      receiverProfilePicture,
+      receiverUsername,
+      senderUsername: `${req.currentUser!.username}`,
+      senderId: `${req.currentUser!.userId}`,
+      senderAvatarColor: `${req.currentUser!.avatarColor}`,
+      senderProfilePicture: `${sender.profilePicture}`,
+      body,
+      isRead,
+      gifUrl,
+      selectedImage: fileUrl,
+      reaction: [],
+      createdAt: new Date(),
+      deleteForEveryone: false,
+      deleteForMe: false
+    };
+
+    Add.prototype.emitSocketIOEvent(messageData);
+
+    if (!isRead) {
+      // Notify receiver only if the message is unread (i.e., they are not simultaneously in the chat).
+      Add.prototype.messageNotification({
+        currentUser: req.currentUser!,
+        message: body,
+        receiverName: receiverUsername,
+        receiverId,
+        messageData
+      });
+    }
+    console.log('Message Data with Image:', messageData);
+
+    // Add sender to chat list in cache
+    await messageCache.addChatListToCache(`${req.currentUser!.userId}`, `${receiverId}`, `${conversationObjectId}`);
+    // Add receiver to chat list in cache
+    await messageCache.addChatListToCache(`${receiverId}`, `${req.currentUser!.userId}`, `${conversationObjectId}`);
+
+    // TODO: Add message data to cache
+    // TODO: Add message to chat queue
+
+    res.status(HTTP_STATUS.OK).json({ message: 'Message added', conversationId: conversationObjectId });
   }
 
   private emitSocketIOEvent(data: IMessageData): void {
+    console.log('Emitting Socket.IO Event for New Message');
     socketIOChatObject.emit('message received', data);
     socketIOChatObject.emit('chat list', data);
   }
