@@ -23,7 +23,6 @@ const messageCache = new MessageCache();
 export class Add {
   @joiValidation(addChatSchema)
   public async message(req: Request, res: Response): Promise<void> {
-    console.log('Add Chat Message Controller');
     const {
       conversationId,
       receiverId,
@@ -89,21 +88,31 @@ export class Add {
         messageData
       });
     }
-    console.log('Message Data with Image:', messageData);
 
     // Add sender to chat list in cache
     await messageCache.addChatListToCache(`${req.currentUser!.userId}`, `${receiverId}`, `${conversationObjectId}`);
     // Add receiver to chat list in cache
     await messageCache.addChatListToCache(`${receiverId}`, `${req.currentUser!.userId}`, `${conversationObjectId}`);
-
-    // TODO: Add message data to cache
+    // Add message data to cache
+    await messageCache.addChatMessageToCache(`${conversationObjectId}`, messageData);
     // TODO: Add message to chat queue
 
     res.status(HTTP_STATUS.OK).json({ message: 'Message added', conversationId: conversationObjectId });
   }
 
+  public async addChatUsers(req: Request, res: Response): Promise<void> {
+    const chatUsers = await messageCache.addChatUsersToCache(req.body);
+    socketIOChatObject.emit('add chat users', chatUsers);
+    res.status(HTTP_STATUS.OK).json({ message: 'Users added' });
+  }
+
+  public async removeChatUsers(req: Request, res: Response): Promise<void> {
+    const chatUsers = await messageCache.removeChatUsersFromCache(req.body);
+    socketIOChatObject.emit('add chat users', chatUsers);
+    res.status(HTTP_STATUS.OK).json({ message: 'Users removed' });
+  }
+
   private emitSocketIOEvent(data: IMessageData): void {
-    console.log('Emitting Socket.IO Event for New Message');
     socketIOChatObject.emit('message received', data);
     socketIOChatObject.emit('chat list', data);
   }

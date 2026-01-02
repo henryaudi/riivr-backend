@@ -8,14 +8,24 @@ Accept: application/json
 withCredentials: true
 
 {
-  "conversationId": "",
+  "conversationId": "6957f099029652537dfb0439",
   "receiverId": "69478cdcf5fa0e7f2b58a5d9",
   "receiverUsername": "Jessiehoward",
   "receiverAvatarColor": "green",
   "receiverProfilePicture": "https://res.cloudinary.com/dfpfkzl6n/image/upload/v1766296796/69478cdcf5fa0e7f2b58a5d9",
-  "body": "Hey Jessie, I love your style!",
+  "body": "Hey Jessie, wanna grab a drink with me?",
   "gifUrl": "",
-  "isRead": false,
+  "isRead": true,
   "selectedImage": ""
 }
 
+###
+POST {{baseUrl}}/{{urlPath}}/chat/message/add-chat-users
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+{
+  "userOne": "694d89173828435f4fe6971b",
+  "userTwo": "69478cdcf5fa0e7f2b58a5d9"
+}
