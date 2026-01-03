@@ -37,3 +37,11 @@ Accept: application/json
 withCredentials: true
 
 {}
+
+###
+GET {{baseUrl}}/{{urlPath}}/chat/message/user/69478cdcf5fa0e7f2b58a5d9
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+{}
