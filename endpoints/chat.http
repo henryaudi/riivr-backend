@@ -13,7 +13,7 @@ withCredentials: true
   "receiverUsername": "Jessiehoward",
   "receiverAvatarColor": "green",
   "receiverProfilePicture": "https://res.cloudinary.com/dfpfkzl6n/image/upload/v1766296796/69478cdcf5fa0e7f2b58a5d9",
-  "body": "Hey Jessie, wanna grab a drink with me?",
+  "body": "Please work!!!!!",
   "gifUrl": "",
   "isRead": true,
   "selectedImage": ""
@@ -40,6 +40,14 @@ withCredentials: true
 
 ###
 GET {{baseUrl}}/{{urlPath}}/chat/message/user/69478cdcf5fa0e7f2b58a5d9
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+{}
+
+###
+DELETE {{baseUrl}}/{{urlPath}}/chat/message/mark-as-deleted/69596679cc29682ec9ad2440/694d89173828435f4fe6971b/69478cdcf5fa0e7f2b58a5d9/deleteForEveryone
 Content-Type: application/json
 Accept: application/json
 withCredentials: true

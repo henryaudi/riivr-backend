@@ -94,7 +94,7 @@ export class MessageCache extends BaseCache {
       if (!this.client.isOpen) {
         await this.client.connect();
       }
-      await this.client.RPUSH(`messages:${conversationId}`, JSON.stringify({ value }));
+      await this.client.RPUSH(`messages:${conversationId}`, JSON.stringify(value));
     } catch (error) {
       log.error(error);
       throw new ServerError('Server error. Try again.');
@@ -154,7 +154,7 @@ export class MessageCache extends BaseCache {
     receiverId: string,
     messageId: string,
     type: string
-  ): Promise<IMessageData[]> {
+  ): Promise<IMessageData> {
     try {
       if (!this.client.isOpen) {
         await this.client.connect();
@@ -173,8 +173,8 @@ export class MessageCache extends BaseCache {
       await this.client.LSET(`messages:${receiver.conversationId}`, index, JSON.stringify(chatItem));
 
       // Retrieve the updated message and return it.
-      const lastMessage: string = await this.client.LINDEX(`messages:${receiver.conversationId}`, index) as string;
-      return Helpers.parseJson(lastMessage) as IMessageData[];
+      const lastMessage: string = (await this.client.LINDEX(`messages:${receiver.conversationId}`, index)) as string;
+      return Helpers.parseJson(lastMessage) as IMessageData;
     } catch (error) {
       log.error(error);
       throw new ServerError('Server error. Try again.');
