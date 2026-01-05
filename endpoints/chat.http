@@ -13,9 +13,9 @@ withCredentials: true
   "receiverUsername": "Jessiehoward",
   "receiverAvatarColor": "green",
   "receiverProfilePicture": "https://res.cloudinary.com/dfpfkzl6n/image/upload/v1766296796/69478cdcf5fa0e7f2b58a5d9",
-  "body": "Please work!!!!!",
+  "body": "What is up again and again??",
   "gifUrl": "",
-  "isRead": true,
+  "isRead": false,
   "selectedImage": ""
 }
 
@@ -53,3 +53,14 @@ Accept: application/json
 withCredentials: true
 
 {}
+
+###
+PUT {{baseUrl}}/{{urlPath}}/chat/message/mark-as-read
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+{
+  "senderId": "694d89173828435f4fe6971b",
+  "receiverId": "69478cdcf5fa0e7f2b58a5d9"
+}
