@@ -8,6 +8,7 @@ import { Helpers } from '@global/helpers/helpers';
 const log: Logger = config.createLogger('userCache');
 
 type UserItem = string | ISocialLinks | INotificationSettings;
+type UserCacheMultiType = string | number | Buffer | IUserDocument | IUserDocument[];
 
 export class UserCache extends BaseCache {
   constructor() {
@@ -129,7 +130,49 @@ export class UserCache extends BaseCache {
     }
   }
 
-  public async updateSingleUserItemInCache(userId: string, prop: string, value: UserItem): Promise<IUserDocument | null> {
+  public async getUsersFromCache(start: number, end: number, excludedUserKey: string): Promise<IUserDocument[]> {
+    try {
+      if (!this.client.isOpen) {
+        await this.client.connect();
+      }
+
+      const response: string[] = await this.client.ZRANGE('user', start, end, { REV: true });
+      const multi: ReturnType<typeof this.client.multi> = this.client.multi();
+      for (const key of response) {
+        if (key !== excludedUserKey) {
+          multi.HGETALL(`users:${key}`);
+        }
+      }
+      const replies: UserCacheMultiType = (await multi.exec()) as UserCacheMultiType;
+      const userReplies: IUserDocument[] = [];
+      for (const reply of replies as IUserDocument[]) {
+        reply.createdAt = new Date(Helpers.parseJson(`${reply.createdAt}`));
+        reply.postsCount = Helpers.parseJson(`${reply.postsCount}`);
+        reply.blocked = Helpers.parseJson(`${reply.blocked}`);
+        reply.blockedBy = Helpers.parseJson(`${reply.blockedBy}`);
+        reply.notifications = Helpers.parseJson(`${reply.notifications}`);
+        reply.social = Helpers.parseJson(`${reply.social}`);
+        reply.followersCount = Helpers.parseJson(`${reply.followersCount}`);
+        reply.followingCount = Helpers.parseJson(`${reply.followingCount}`);
+        reply.bgImageVersion = Helpers.parseJson(`${reply.bgImageVersion}`);
+        reply.bgImageId = Helpers.parseJson(`${reply.bgImageId}`);
+        reply.profilePicture = Helpers.parseJson(`${reply.profilePicture}`);
+        
+        userReplies.push(reply);
+      }
+
+      return userReplies;
+    } catch (error) {
+      log.error(`Error getting user from cache: ${error}`);
+      throw new ServerError('Error getting user from cache. Try again!');
+    }
+  }
+
+  public async updateSingleUserItemInCache(
+    userId: string,
+    prop: string,
+    value: UserItem
+  ): Promise<IUserDocument | null> {
     try {
       if (!this.client.isOpen) {
         await this.client.connect();
@@ -138,7 +181,7 @@ export class UserCache extends BaseCache {
       const dataToSave: string[] = [`${prop}`, JSON.stringify(value)];
       await this.client.HSET(`users:${userId}`, dataToSave);
 
-      const response: IUserDocument = await this.getUserFromCache(userId) as IUserDocument;
+      const response: IUserDocument = (await this.getUserFromCache(userId)) as IUserDocument;
       return response;
     } catch (error) {
       log.error(error);
