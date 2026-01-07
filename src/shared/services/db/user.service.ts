@@ -10,8 +10,8 @@ class UserService {
   public async getUserById(userId: string): Promise<IUserDocument> {
     const users: IUserDocument[] = await UserModel.aggregate([
       { $match: { _id: new mongoose.Types.ObjectId(userId) } },
-      { $lookup: { from: 'Auth', localField: 'authId', foreignField: '_id', as: 'auth' } }, // Join with Auth collection
-      { $unwind: '$auth' },
+      { $lookup: { from: 'Auth', localField: 'authId', foreignField: '_id', as: 'authId' } }, // Join with Auth collection
+      { $unwind: '$authId' },
       { $project: this.aggregateProject() }
     ]);
 
@@ -21,11 +21,25 @@ class UserService {
   public async getUserByAuthId(authId: string): Promise<IUserDocument> {
     const users: IUserDocument[] = await UserModel.aggregate([
       { $match: { authId: new mongoose.Types.ObjectId(authId) } },
-      { $lookup: { from: 'Auth', localField: 'authId', foreignField: '_id', as: 'auth' } },
+      { $lookup: { from: 'Auth', localField: 'authId', foreignField: '_id', as: 'authId' } },
       { $unwind: '$auth' },
       { $project: this.aggregateProject() }
     ]);
     return users[0];
+  }
+
+  public async getAllUsers(userId: string, skip: number, limit: number): Promise<IUserDocument[]> {
+    const users: IUserDocument[] = await UserModel.aggregate([
+      { $match: { _id: { $ne: new mongoose.Types.ObjectId(userId) } } },
+      { $skip: skip },
+      { $limit: limit },
+      { $sort: { createdAt: -1 } },
+      { $lookup: { from: 'Auth', localField: 'authId', foreignField: '_id', as: 'authId' } },
+      { $unwind: '$authId' },
+      { $project: this.aggregateProject() }
+    ]);
+
+    return users;
   }
 
   private aggregateProject() {
