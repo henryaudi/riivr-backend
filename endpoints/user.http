@@ -1,0 +1,10 @@
+@baseUrl = http://localhost:5050
+@urlPath = api/v1
+
+###
+GET {{baseUrl}}/{{urlPath}}/user/all/1
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+{}

@@ -157,7 +157,7 @@ export class UserCache extends BaseCache {
         reply.bgImageVersion = Helpers.parseJson(`${reply.bgImageVersion}`);
         reply.bgImageId = Helpers.parseJson(`${reply.bgImageId}`);
         reply.profilePicture = Helpers.parseJson(`${reply.profilePicture}`);
-        
+
         userReplies.push(reply);
       }
 
@@ -183,6 +183,20 @@ export class UserCache extends BaseCache {
 
       const response: IUserDocument = (await this.getUserFromCache(userId)) as IUserDocument;
       return response;
+    } catch (error) {
+      log.error(error);
+      throw new ServerError('Server error. Try again.');
+    }
+  }
+
+  public async getTotalUsersInCache(): Promise<number> {
+    try {
+      if (!this.client.isOpen) {
+        await this.client.connect();
+      }
+
+      const count: number = await this.client.ZCARD('user');
+      return count;
     } catch (error) {
       log.error(error);
       throw new ServerError('Server error. Try again.');

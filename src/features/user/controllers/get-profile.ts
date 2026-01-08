@@ -36,7 +36,9 @@ export class Get {
     });
 
     const followers: IFollowerData[] = await Get.prototype.followers(`${req.currentUser!.userId}`);
-    res.status(HTTP_STATUS.OK).json({ message: 'Get users', users: allUsers.users, totalUsers: allUsers.totalUsers, followers });
+    res
+      .status(HTTP_STATUS.OK)
+      .json({ message: 'Get users', users: allUsers.users, totalUsers: allUsers.totalUsers, followers });
   }
 
   private async allUsers({ newSkip, limit, skip, userId }: IUserAll): Promise<IAllUsers> {
@@ -56,14 +58,16 @@ export class Get {
   }
 
   private async usersCount(type: string): Promise<number> {
-    return 0;
+    const totalUsers: number =
+      type === 'redis' ? await userCache.getTotalUsersInCache() : await userService.getTotalUsersInDB();
+    return totalUsers;
   }
 
   private async followers(userId: string): Promise<IFollowerData[]> {
     const cachedFollowers: IFollowerData[] = await followerCache.getFollowersFromCache(`followers:${userId}`);
     const result = cachedFollowers.length
       ? cachedFollowers
-      : await followerService.getFolloweeData(new mongoose.Types.ObjectId(userId));
+      : await followerService.getFollowerData(new mongoose.Types.ObjectId(userId));
     return result;
   }
 }
