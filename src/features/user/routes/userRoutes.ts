@@ -1,6 +1,7 @@
 import { Add } from '@comment/controllers/add-comment';
 import { authMiddleware } from '@global/helpers/auth-middleware';
 import { Get } from '@user/controllers/get-profile';
+import { Search } from '@user/controllers/search-user';
 import express, { Router } from 'express';
 
 class UserRoutes {
@@ -16,6 +17,7 @@ class UserRoutes {
     this.router.get('/user/profile/:userId', authMiddleware.checkAuthentication, Get.prototype.profileByUserId);
     this.router.get('/user/profile/posts/:username/:userId/:uId', authMiddleware.checkAuthentication, Get.prototype.profileAndPosts);
     this.router.get('/user/profile/user/suggestions', authMiddleware.checkAuthentication, Get.prototype.randomUserSuggegstions);
+    this.router.get('/user/profile/search/:query', authMiddleware.checkAuthentication, Search.prototype.user);
 
     return this.router;
   }
