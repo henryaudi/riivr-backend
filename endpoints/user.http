@@ -8,3 +8,11 @@ Accept: application/json
 withCredentials: true
 
 {}
+
+###
+GET {{baseUrl}}/{{urlPath}}/user/profile/posts/ryan reed/695f231557e05d1a019a38e9/571798514684
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+{}
