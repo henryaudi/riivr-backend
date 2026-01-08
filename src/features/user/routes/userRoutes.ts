@@ -1,4 +1,3 @@
-
 import { Add } from '@comment/controllers/add-comment';
 import { authMiddleware } from '@global/helpers/auth-middleware';
 import { Get } from '@user/controllers/get-profile';
@@ -13,6 +12,8 @@ class UserRoutes {
 
   public routes(): Router {
     this.router.get('/user/all/:page', authMiddleware.checkAuthentication, Get.prototype.all);
+    this.router.get('/user/profile', authMiddleware.checkAuthentication, Get.prototype.profile);
+    this.router.get('/user/profile/:userId', authMiddleware.checkAuthentication, Get.prototype.profileByUserId);
 
     return this.router;
   }
