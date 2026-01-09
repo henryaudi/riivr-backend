@@ -26,9 +26,60 @@ withCredentials: true
 {}
 
 ###
-GET {{baseUrl}}/{{urlPath}}/user/profile/search/rob
+GET {{baseUrl}}/{{urlPath}}/user/profile/search/robinson
 Content-Type: application/json
 Accept: application/json
 withCredentials: true
 
 {}
+
+###
+PUT {{baseUrl}}/{{urlPath}}/user/profile/change-password
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+{
+  "currentPassword": "password12345",
+  "newPassword": "password123",
+  "confirmPassword": "password123"
+}
+
+###
+PUT {{baseUrl}}/{{urlPath}}/user/profile/basic-info
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+{
+  "quote": "Tommorow is another day.",
+  "work": "Roche",
+  "school": "Southern Methodist University",
+  "location": ""
+}
+
+###
+PUT {{baseUrl}}/{{urlPath}}/user/profile/social-links
+content-type: application/json
+Accept: 'application/json'
+withCredentials: true
+
+{
+  "instagram": "",
+  "twitter": "https://twitter.com/riivr_app",
+  "facebook": "",
+  "youtube": ""
+}
+
+###
+PUT {{baseUrl}}/{{urlPath}}/user/profile/settings
+content-type: application/json
+Accept: 'application/json'
+withCredentials: true
+
+{
+  "messages": false,
+  "reactions": true,
+  "comments": false,
+  "follows": true
+}
