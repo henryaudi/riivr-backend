@@ -73,7 +73,7 @@ export class Get {
     res.status(HTTP_STATUS.OK).json({ message: 'Get user profile and posts', user: existingUser, posts: userPosts });
   }
 
-  public async randomUserSuggegstions(req: Request, res: Response): Promise<void> {
+  public async randomUserSuggestions(req: Request, res: Response): Promise<void> {
     let randomUsers: IUserDocument[] = [];
     const cachedUsers: IUserDocument[] = await userCache.getRandomUsersFromCache(`${req.currentUser!.userId}`, req.currentUser!.username);
 
