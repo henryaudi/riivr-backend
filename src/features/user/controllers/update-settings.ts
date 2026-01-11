@@ -1,12 +1,9 @@
 import { Request, Response } from 'express';
 import HTTP_STATUS from 'http-status-codes';
-import { userService } from '@service/db/user.service';
-import { ISearchUser } from '@user/interfaces/user.interface';
-import { Helpers } from '@global/helpers/helpers';
 import { UserCache } from '@service/redis/user.cache';
 import { userQueue } from '@service/queues/user.queue';
 import { joiValidation } from '@global/decorators/joi-validation.decorators';
-import { basicInfoSchema, notificationSettingsSchema, socialLinksSchema } from '@user/validations/info';
+import { notificationSettingsSchema } from '@user/validations/info';
 
 const userCache: UserCache = new UserCache();
 

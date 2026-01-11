@@ -1,4 +1,3 @@
-import { Add } from '@comment/controllers/add-comment';
 import { authMiddleware } from '@global/helpers/auth-middleware';
 import { Update } from '@user/controllers/change-password';
 import { Get } from '@user/controllers/get-profile';
