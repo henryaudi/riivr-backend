@@ -4,7 +4,11 @@ import { faker } from '@faker-js/faker';
 import { floor, random } from 'lodash';
 import axios from 'axios';
 import { createCanvas } from 'canvas';
+import { IAuthDocument } from '@auth/interfaces/auth.interface';
+
 dotenv.config({});
+const userSet = new Set<string>();
+const users = [];
 
 function avatarColor(): string {
   const colors: string[] = [
@@ -54,15 +58,14 @@ function generateAvatar(text: string, backgroundColor: string, foregroundColor =
 
 async function seedUserData(count: number): Promise<void> {
   let i = 0;
-  const usedUsernames = new Set<string>();
 
   try {
     for (i = 0; i < count; i++) {
       let username: string;
       do {
         username = faker.internet.username();
-      } while (usedUsernames.has(username));
-      usedUsernames.add(username);
+      } while (userSet.has(username));
+      userSet.add(username);
 
       const color = avatarColor();
       const avatar = generateAvatar(username.charAt(0).toUpperCase(), color);
@@ -74,6 +77,7 @@ async function seedUserData(count: number): Promise<void> {
         avatarColor: color,
         avatarImage: avatar
       };
+      users.push(body);
       console.log(`***ADDING USER TO DATABASE*** - ${i + 1} of ${count} - ${username}`);
       await axios.post(`${process.env.API_URL}/signup`, body);
     }
