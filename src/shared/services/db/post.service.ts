@@ -19,8 +19,10 @@ class PostService {
     sort: Record<string, 1 | -1>
   ): Promise<IPostDocument[]> {
     let postQuery = {};
-    if (query.imgId && query.gifUrl) {
+    if (query?.imgId && query?.gifUrl) {
       postQuery = { $or: [{ imgId: { $ne: '' } }, { gifUrl: { $ne: '' } }] };
+    } else if (query?.videoId) {
+      postQuery = { $or: [{ videoId: { $ne: '' } }] };
     } else {
       postQuery = query;
     }
@@ -52,10 +54,7 @@ class PostService {
   }
 
   public async editPost(postId: string, updatedPost: IPostDocument): Promise<void> {
-    const updatePost: UpdateQuery<IPostDocument> = UserModel.updateOne(
-      { _id: postId },
-      { $set: updatedPost }
-    );
+    const updatePost: UpdateQuery<IPostDocument> = UserModel.updateOne({ _id: postId }, { $set: updatedPost });
 
     await Promise.all([updatePost]);
   }
