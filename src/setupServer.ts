@@ -7,6 +7,7 @@ import compression from 'compression';
 import cookieSession from 'cookie-session';
 import HTTP_STATUS from 'http-status-codes';
 import Logger from 'bunyan';
+import apiStats from 'swagger-stats';
 import 'express-async-errors';
 import { config } from '@root/config';
 import { Server } from 'socket.io';
@@ -35,6 +36,7 @@ export class RiivrServer {
     this.securityMiddleware(this.app);
     this.standardMiddleware(this.app);
     this.routeMiddleware(this.app);
+    this.apiMonitoring(this.app);
     this.globalErrorHandler(this.app);
     this.startServer(this.app);
   }
@@ -76,6 +78,14 @@ export class RiivrServer {
 
   private routeMiddleware(app: Application): void {
     applicationRoutes(app);
+  }
+
+  private apiMonitoring(app: Application): void {
+    app.use(
+      apiStats.getMiddleware({
+        uriPath: '/api-monitoring'
+      })
+    );
   }
 
   private globalErrorHandler(app: Application): void {

@@ -52,6 +52,7 @@
     "nodemailer": "^7.0.10",
     "redis": "^5.9.0",
     "socket.io": "^4.8.1",
+    "swagger-stats": "^0.99.7",
     "typescript": "^5.9.3"
   },
   "devDependencies": {
@@ -70,6 +71,7 @@
     "@types/lodash": "^4.17.20",
     "@types/nodemailer": "^7.0.3",
     "@types/redis-info": "^3.0.3",
+    "@types/swagger-stats": "^0.95.11",
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
     "jest": "^30.2.0",
