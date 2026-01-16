@@ -19,6 +19,8 @@ class Config {
   public SENDER_EMAIL_PASSWORD: string | undefined;
   public SENDGRID_API_KEY: string | undefined;
   public SENDGRID_SENDER: string | undefined;
+  public POSTMARK_API_KEY: string | undefined;
+  public POSTMARK_SENDER: string | undefined;
   public EC2_URL: string | undefined;
 
   private readonly DEFAULT_DB_URL = 'mongodb://localhost:27017/riivr-backend';
@@ -44,6 +46,8 @@ class Config {
     this.SENDER_EMAIL_PASSWORD = process.env.SENDER_EMAIL_PASSWORD || '';
     this.SENDGRID_API_KEY = process.env.SENDGRID_API_KEY || '';
     this.SENDGRID_SENDER = process.env.SENDGRID_SENDER || '';
+    this.POSTMARK_API_KEY = process.env.POSTMARK_API_KEY || '';
+    this.POSTMARK_SENDER = process.env.POSTMARK_SENDER || '';
     this.EC2_URL = process.env.EC2_URL || '';
   }
 

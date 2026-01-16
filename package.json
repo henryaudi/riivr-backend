@@ -4,7 +4,9 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon ./build/src/app.js | ./node_modules/.bin/bunyan",
+    "start": "NODE_ENV=production pm2 start ./build/src/app.js -i 5 --attach --watch | ./node_modules/.bin/bunyan",
+    "stop": "pm2 stop all",
+    "delete": "pm2 delete all",
     "dev": "nodemon -r tsconfig-paths/register src/app.ts | ./node_modules/.bin/bunyan",
     "lint:check": "eslint 'src/**/*.ts'",
     "lint:fix": "eslint 'src/**/*.ts' --fix",
@@ -12,7 +14,8 @@
     "prettier:fix": "prettier --write 'src/**/*.{ts,json}'",
     "test": "jest --coverage=true -w=1 --forceExit --detectOpenHandles --watchAll=true",
     "build": "tsc --project tsconfig.json && tsc-alias -p tsconfig.json",
-    "seeds:dev": "npx ts-node src/seeds.ts"
+    "seeds:dev": "npx ts-node src/seeds.ts",
+    "seeds:prod": "npx ts-node ./build/src/seeds.js"
   },
   "keywords": [],
   "author": "",
@@ -23,7 +26,6 @@
     "@bull-board/ui": "^6.14.2",
     "@faker-js/faker": "^10.2.0",
     "@jest/types": "^30.2.0",
-    "@sendgrid/mail": "^8.1.6",
     "@socket.io/redis-adapter": "^8.3.0",
     "@types/jest": "^30.0.0",
     "axios": "^1.13.2",
@@ -50,6 +52,7 @@
     "moment": "^2.30.1",
     "mongoose": "^8.19.3",
     "nodemailer": "^7.0.10",
+    "postmark": "^4.0.5",
     "redis": "^5.9.0",
     "socket.io": "^4.8.1",
     "swagger-stats": "^0.99.7",
