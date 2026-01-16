@@ -1,9 +1,10 @@
 import nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
+import postmark from 'postmark';
 import Logger from 'bunyan';
-import sendGridMail from '@sendgrid/mail';
 import { config } from '@root/config';
 import { BadRequestError } from '@global/helpers/error-handler';
+// import sendGridMail from '@sendgrid/mail';
 
 interface IMailOptions {
   from: string;
@@ -14,7 +15,8 @@ interface IMailOptions {
 
 const log: Logger = config.createLogger('mailOptions');
 
-sendGridMail.setApiKey(config.SENDGRID_API_KEY!);
+const postmarkClient = config.POSTMARK_API_KEY ? new postmark.ServerClient(config.POSTMARK_API_KEY) : null;
+// sendGridMail.setApiKey(config.SENDGRID_API_KEY!);
 
 class MailTransport {
   public async sendEmail(receiverEmail: string, subject: string, body: string): Promise<void> {
@@ -53,6 +55,11 @@ class MailTransport {
   }
 
   private async prodEmailSender(receiverEmail: string, subject: string, body: string): Promise<void> {
+    if (!postmarkClient) {
+      log.error('Postmark client is not initialized');
+      throw new BadRequestError('Email service is not configured');
+    }
+
     const mailOptions: IMailOptions = {
       from: `Riivr App <${config.SENDER_EMAIL!}>`,
       to: receiverEmail,
@@ -61,12 +68,22 @@ class MailTransport {
     };
 
     try {
-      await sendGridMail.send(mailOptions);
-      log.info('Production Email sent successfully via SendGrid to %s', receiverEmail);
+      const postmarkMessage = MailTransport.toPostmarkMessage(mailOptions);
+      await postmarkClient.sendEmail(postmarkMessage);
+      log.info('Production Email sent successfully via Postmark to %s', receiverEmail);
     } catch (error) {
       log.error('Error sending email in production:', error);
       throw new BadRequestError('Error sending email');
     }
+  }
+
+  private static toPostmarkMessage(mailOptions: IMailOptions): postmark.Models.Message {
+    return {
+      From: mailOptions.from,
+      To: mailOptions.to,
+      Subject: mailOptions.subject,
+      HtmlBody: mailOptions.html
+    };
   }
 }
 
