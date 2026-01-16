@@ -1,0 +1,79 @@
+@baseUrl = http://localhost:5050
+@urlPath = api/v1
+
+###
+POST {{baseUrl}}/{{urlPath}}/chat/message
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+{
+  "conversationId": "6957f099029652537dfb0439",
+  "receiverId": "69478cdcf5fa0e7f2b58a5d9",
+  "receiverUsername": "Jessiehoward",
+  "receiverAvatarColor": "green",
+  "receiverProfilePicture": "https://res.cloudinary.com/dfpfkzl6n/image/upload/v1766296796/69478cdcf5fa0e7f2b58a5d9",
+  "body": "What is up again and again??",
+  "gifUrl": "",
+  "isRead": false,
+  "selectedImage": ""
+}
+
+###
+POST {{baseUrl}}/{{urlPath}}/chat/message/add-chat-users
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+{
+  "userOne": "694d89173828435f4fe6971b",
+  "userTwo": "69478cdcf5fa0e7f2b58a5d9"
+}
+
+###
+GET {{baseUrl}}/{{urlPath}}/chat/message/conversation-list
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+{}
+
+###
+GET {{baseUrl}}/{{urlPath}}/chat/message/user/69478cdcf5fa0e7f2b58a5d9
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+{}
+
+###
+DELETE {{baseUrl}}/{{urlPath}}/chat/message/mark-as-deleted/69596679cc29682ec9ad2440/694d89173828435f4fe6971b/69478cdcf5fa0e7f2b58a5d9/deleteForEveryone
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+{}
+
+###
+PUT {{baseUrl}}/{{urlPath}}/chat/message/mark-as-read
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+{
+  "senderId": "694d89173828435f4fe6971b",
+  "receiverId": "69478cdcf5fa0e7f2b58a5d9"
+}
+
+###
+PUT {{baseUrl}}/{{urlPath}}/chat/message/reaction
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+{
+  "conversationId": "6957f099029652537dfb0439",
+  "messageId": "695b5a160ef81548d243d31f",
+  "reaction": "happy",
+  "type": "remove"
+}
