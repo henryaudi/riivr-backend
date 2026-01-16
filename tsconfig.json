@@ -1,7 +1,7 @@
 {
   // ============================================================
   //  TypeScript Configuration
-  //  Project: Riivr Social App
+  //  Project: Riivr App
   //  Author: Shangjie (Henry) Zheng
   //  Environment: Node 20+ / Modern Browsers
   // ============================================================
@@ -19,7 +19,7 @@
     ---------------------------------------------------------- */
     "baseUrl": ".",
     "outDir": "./build",
-    "rootDir": "src",
+    "rootDir": ".",
 
     /* ----------------------------------------------------------
        Type Safety & Diagnostics
@@ -47,6 +47,27 @@
     "emitDecoratorMetadata": true,
     "forceConsistentCasingInFileNames": true,
     "pretty": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+
+    /* ----------------------------------------------------------
+       Custom Paths & Plugins
+       (Path aliases and custom transformers/plugins)
+    ---------------------------------------------------------- */
+    "paths": {
+      "@user/*": ["src/features/user/*"],
+      "@auth/*": ["src/features/auth/*"],
+      "@post/*": ["src/features/post/*"],
+      "@reaction/*": ["src/features/reactions/*"],
+      "@comment/*": ["src/features/comments/*"],
+      "@follower/*": ["src/features/followers/*"],
+      "@notification/*": ["src/features/notifications/*"],
+      "@image/*": ["src/features/images/*"],
+      "@chat/*": ["src/features/chat/*"],
+      "@global/*": ["src/shared/globals/*"],
+      "@service/*": ["src/shared/services/*"],
+      "@socket/*": ["src/shared/sockets/*"],
+      "@worker/*": ["src/shared/workers/*"],
+      "@root/*": ["src/*"]
+    }
   }
 }
