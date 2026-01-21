@@ -145,4 +145,7 @@ dist
 # Build
 build/
 
+### Terraform defaults ###
+infra/1-variables.tf
+
 # End of https://www.toptal.com/developers/gitignore/api/node
