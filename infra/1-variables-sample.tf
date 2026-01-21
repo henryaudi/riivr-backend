@@ -33,7 +33,6 @@ variable "global_destination_cidr_block" {
   type        = string
   default     = "0.0.0.0/0"
 }
-#test comment line
 
 variable "bastion_host_cidr" {
   description = "CIDR Block for Bastion Host Ingress"
