@@ -45,7 +45,7 @@ export class RiivrServer {
     app.use(
       // Store the session in a cookie.
       cookieSession({
-        name: 'session',
+        name: 'riivr-session',
         keys: [config.SECRETE_KEY_ONE!, config.SECRETE_KEY_TWO!],
         maxAge: 24 * 7 * 3600 * 1000,
         secure: config.NODE_ENV !== 'development'
