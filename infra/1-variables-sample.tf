@@ -117,3 +117,10 @@ variable "project" {
   type        = string
   default     = "riivr-server"
 }
+
+variable "key_pair_name" {
+  description = "Key Pair Name for EC2 Instances"
+  type        = string
+  default     = "samplekeypair"
+}
+
