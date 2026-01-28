@@ -5,7 +5,7 @@ aws s3 sync s3://riivr-app-terraform-state/dev .
 unzip env-file.zip
 
 cp .env.production .env
-em .env.production
+rm .env.production
 
 sed -i -e "s|\(^REDIS_HOST=\).*|REDIS_HOST=redis://$ELASTICACHE_ENDPOINT_REDIS:6379|g" .env
 
