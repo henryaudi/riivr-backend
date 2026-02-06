@@ -15,10 +15,10 @@ resource "aws_elasticache_replication_group" "riivr_redis_cluster" {
   subnet_group_name    = aws_elasticache_subnet_group.elasticache_subnet_group.name
   security_group_ids   = [aws_security_group.elasticache_sg.id]
 
-  depends_on = [aws_security_group.elasticache_sg.id]
+  depends_on = [aws_security_group.elasticache_sg]
 
   provisioner "local-exec" {
-    command = file("./userdata/update-env-file.sh")
+    command = file("./scripts/update-env-file.sh")
 
     environment = {
       ELASTICACHE_ENDPOINT_REDIS = self.primary_endpoint_address

@@ -1,8 +1,8 @@
 resource "aws_vpc" "main" {
-  cidr_block = var.vpc_cidr_block
+  cidr_block           = var.vpc_cidr_block
   enable_dns_hostnames = true
 
-  tags = merge (
+  tags = merge(
     local.common_tags,
     tomap({ "Name" = "${local.prefix}" })
   )

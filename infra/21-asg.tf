@@ -27,14 +27,14 @@ resource "aws_autoscaling_group" "ec2_autoscaling_group" {
   ]
 
   tag {
-    key = "Name"
-    value = "EC2-ASG-${terraform.workspace}"
+    key                 = "Name"
+    value               = "EC2-ASG-${terraform.workspace}"
     propagate_at_launch = true
   }
 
   tag {
-    key = "Type"
-    value = "Backend-${terraform.workspace}"
+    key                 = "Type"
+    value               = "Backend-${terraform.workspace}"
     propagate_at_launch = true
   }
 }
