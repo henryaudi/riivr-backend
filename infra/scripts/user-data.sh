@@ -37,8 +37,8 @@ git clone -b dev https://github.com/henryaudi/riivr-backend.git
 
 cd riivr-backend
 npm install
-aws s3 sync s3://riivr-app-terraform-state/dev .
+aws s3 sync s3://riivr-app-env-files/dev .
 unzip env-file.zip
-cp .env.production .env
+cp .env.development .env
 npm run build
 npm run start

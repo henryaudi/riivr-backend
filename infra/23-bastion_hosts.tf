@@ -3,7 +3,7 @@ resource "aws_instance" "bastion_host" {
   instance_type               = var.bastion_host_type
   vpc_security_group_ids      = [aws_security_group.bastion_host_sg.id]
   subnet_id                   = aws_subnet.public_subnet_a.id
-  key_name                    = var.key_pair_name
+  key_name                    = "riivr-server-key-pair"
   associate_public_ip_address = true
   tags = merge(
     local.common_tags,
