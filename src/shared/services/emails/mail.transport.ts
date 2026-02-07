@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
-import postmark from 'postmark';
+import * as postmark from 'postmark';
 import Logger from 'bunyan';
 import { config } from '@root/config';
 import { BadRequestError } from '@global/helpers/error-handler';
