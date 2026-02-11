@@ -41,6 +41,7 @@ riivr-backend/
 │   ├── routes.ts              # Root route registration
 │   ├── setupDatabase.ts       # MongoDB connection setup
 │   ├── setupServer.ts         # Express + Socket.IO server initialization
+|   ├── seeds.ts               # Seeds initial/sample data into MongoDB
 │   ├── features/              # Domain modules (feature-first architecture)
 │   │   ├── auth/              # Signup/signin/signout, JWT auth, current user
 │   │   ├── chat/              # Real-time chat, message CRUD, reactions (Socket.IO)
@@ -71,16 +72,23 @@ features/chat/
 │   ├── update-chat-message.ts
 │   ├── delete-chat-message.ts
 │   ├── get-chat-message.ts
-│   └── add-message-reaction.ts
+│   ├── add-message-reaction.ts
+│   └── test/                     # Jest unit tests for controller layer
+│       ├── add-chat-message.test.ts
+│       ├── update-chat-message.test.ts
+│       ├── delete-chat-message.test.ts
+│       ├── get-chat-message.test.ts
+│       └── add-message-reaction.test.ts
 ├── models/
 │   ├── chat.schema.ts
 │   └── conversation.schema.ts
 ├── routes/
 │   └── chatRoutes.ts
 ├── interfaces/
-│   └── chat.interface.ts
+│   ├── chat.interface.ts
+│   └── conversation.interface.ts
 └── validations/
-    └── chat.validation.ts
+    └── chat.ts
 ```
 Each feature module encapsulates:
 
