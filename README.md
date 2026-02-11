@@ -334,8 +334,13 @@ pm2 start dist/app.js --name riivr-backend
 
 ## Deployment
 
-Deployment scripts are available in `/scripts`.  
-AWS CodeDeploy configuration is included where applicable.
+Deployment scripts are located in `/scripts` and implement AWS CodeDeploy lifecycle hooks:
+
+- `before_install.sh` – Cleans existing deployment directory
+- `after_install.sh` – Retrieves environment configuration and installs dependencies
+- `application_start.sh` – Builds and starts the backend service
+
+AWS CodeDeploy is configured via `appspec.yaml` to orchestrate these hooks during deployment.
 
 ---
 
