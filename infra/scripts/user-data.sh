@@ -15,6 +15,13 @@ while sudo fuser /var/run/yum.pid >/dev/null 2>&1; do
 done
 
 sudo yum update -y
+sudo yum install ruby -y
+sudo yum install wget -y
+
+cd /home/ec2-user
+wget https://aws-codedeploy-us-east-1.s3.us-east-1.amazonaws.com/latest/install
+sudo chmod +x ./install
+sudo ./install auto
 
 # Install Node.js if not installed (AL2 is glibc 2.26; NodeSource LTS now requires >= 2.28).
 if [ $(program_is_installed node) == 0 ]; then

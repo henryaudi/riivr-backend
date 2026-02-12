@@ -95,6 +95,22 @@ resource "aws_security_group" "elasticache_sg" {
     description     = "Allows access to web server through ALB"
   }
 
+  ingress {
+    from_port       = 6379
+    to_port         = 6379
+    protocol        = "TCP"
+    security_groups = [aws_security_group.bastion_host_sg.id]
+    description     = "Allows Redis access from bastion host"
+  }
+
+  ingress {
+    from_port       = 6379
+    to_port         = 6379
+    protocol        = "TCP"
+    security_groups = [aws_security_group.autoscaling_group_sg.id]
+    description     = "Allows access to redis server through ASG"
+  }
+
   egress {
     from_port   = 0
     to_port     = 0
