@@ -1,0 +1,6 @@
+aws deploy create-deployment \
+    --region us-east-1 \
+    --application-name riivr-server-default-app \
+    --deployment-config-name CodeDeployDefault.AllAtOnce \
+    --deployment-group-name riivr-server-default-group \
+    --s3-location bucket=riivr-server-default-app,bundleType=zip,key=riivrapp.zip
